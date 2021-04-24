@@ -12,6 +12,7 @@
     
     
     <canvas id="mycanvas" width="500" height="500"></canvas>
+    <canvas id="my_canvas" width="500" height="500"></canvas>
     <div id="score"></div>
     <div id = "bottom" class="buttons">
         <h4>CONTROLS</h4>
@@ -25,6 +26,7 @@
     <script type="text/javascript">
     let c = document.getElementById("mycanvas");
     let ctx = c.getContext("2d");
+    
 
 
 
@@ -37,7 +39,7 @@
 
     //creating a function for image src
     let imagepath = (framenumber, animation) =>{
-        return ("https://github.com/ashritachikkala/matrialartsgame/blob/main/"+animation+"/"+framenumber+".png?raw=true");
+        return ("/"+animation+"/"+framenumber+".png");
     };
 
     // creating an object for actions
@@ -75,6 +77,8 @@
             setTimeout(() => {                         //function to be called in the given time
                 ctx.clearRect(0, 0, 500, 500);         // keeping these two functions in a single function
                 ctx.drawImage(image, 0, 0, 500, 500);
+                ctx.font = "bold 30px Times";
+                ctx.fillText("YOU", 200, 50);
             }, index*100);
         });
         setTimeout(callback, images[animation].length*100);
@@ -96,7 +100,7 @@
         aux();
         
         document.getElementById("kick").onclick=()=>{
-        queuedanimation.push("kick")
+            queuedanimation.push("kick")
         };
 
         document.getElementById("punch").onclick=()=>{
@@ -134,6 +138,82 @@
             
         });   
     });
+    </script>
+    <script type="text/javascript">
+        let a = document.getElementById("my_canvas");
+        let con = a.getContext("2d");
+        let loadimagea=(src,callback) =>{
+            let img = document.createElement("img");
+            img.onload=()=>callback(img);
+            console.log("hello");
+            img.src = src
+        };
+        
+
+        
+        //creating a function for image src
+        let imagepatha = (framenumbera, animationa) =>{
+            return ("/flip/"+animationa+"/"+framenumbera+".png");
+        };
+
+        // creating an object for actions
+        let framesa = {
+            idlea: [1, 2, 3, 4, 5, 6, 7, 8],
+            kicka: [1, 2, 3, 4, 5, 6, 7],
+            puncha: [1, 2, 3, 4, 5, 6, 7],
+            backwarda: [1, 2, 3, 4, 5, 6],
+            forwarda: [1, 2, 3, 4, 5, 6],
+            blocka: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        }
+        //function for loading all the images into an array
+        let loadimagesa = (callback) => {
+            let imagesa={idlea: [], kicka: [], puncha: [], backwarda: [], forwarda: [], blocka: []}; //creating an object with respective arrays for loading images
+            let imagestoloada = 0;                      //creating  a counter for images to be loaded
+            ["idlea", "kicka", "puncha", "backwarda", "forwarda", "blocka"].forEach((animationa) =>{
+                let animationframea = framesa[animationa]; //creating list animation frames for each animation
+                imagestoloada = imagestoloada + animationframea.length;
+                animationframea.forEach((framenumbera) => {
+                    let patha = imagepatha(framenumbera, animationa); //getting the path i.e., src of image
+                    loadimagea(patha, (imagea) => {       //calling the loadimage function to load image into a variable image
+                        imagesa[animationa][framenumbera-1] = imagea; // loading the image into an array of images with index no
+                        imagestoloada=imagestoloada-1;   // updating the value of images to load
+                        if (imagestoloada===0){
+                            callback(imagesa);          //finally calling the images array
+                        }
+                    });
+                });       
+            });
+        };
+
+        //for animating the images
+        let animatea = (con, imagesa, animationa, callback) => {
+            imagesa[animationa].forEach((imagea, index) => { //iterating through images array
+                setTimeout(() => {                         //function to be called in the given time
+                    con.clearRect(0, 0, 500, 500);         // keeping these two functions in a single function
+                    con.drawImage(imagea, 0, 0, 500, 500);
+                    con.font = "bold 30px Times";
+                    con.fillText("OPPONENT", 200, 50);
+                }, index*100);
+            });
+            setTimeout(callback, imagesa[animationa].length*100);
+        };
+
+        function random(mn, mx) { 
+            return Math.random() * (mx - mn) + mn; 
+        } 
+          
+         //call back function getting loaded images
+        loadimagesa((imagesa) => {
+            let queuedanimationa = ["idlea","kicka","backwarda","puncha","forwarda","blocka"];
+            let auxa = ()  => {
+                selectedanimationa = queuedanimationa[Math.floor(random(1, 6))-1];
+                animatea(con, imagesa, selectedanimationa, auxa); 
+            };
+            auxa();
+            
+        });
+
+
     </script>
     
 </body>
