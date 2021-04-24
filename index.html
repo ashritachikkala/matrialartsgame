@@ -13,7 +13,7 @@
     
     <canvas id="mycanvas" width="500" height="500"></canvas>
     <canvas id="my_canvas" width="500" height="500"></canvas>
-    <div id="score"></div>
+    <div id="score" class="scores"></div>
     <div id = "bottom" class="buttons">
         <h4>CONTROLS</h4>
         <button id="kick" >KICK (Keyboard = ⬅)</button>
@@ -21,6 +21,10 @@
         <button id="backward">BACKWARD(Keyboard = ⬇)</button>
         <button id="forward">FORWARD(Keyboard = ⬆)</button>
         <button id="block">DEFEND</button>
+    </div>
+    <div class="instru">
+        <p>Click restart, to reset your score!<br> POINTS: KICK=10 , PUNCH=5 , BACKWARD = -1 , FORWARD = 1 , DEFEND = 2</p>
+        
     </div>
     
     <script type="text/javascript">
@@ -98,25 +102,45 @@
         
         }
         aux();
-        
+
+        let scores={
+            "kick": 10,
+            "backward": -1,
+            "forward": 1,
+            "block": 2,
+            "punch": 5
+        };
+        let score=0;
+
         document.getElementById("kick").onclick=()=>{
             queuedanimation.push("kick")
+            score=scores.kick;
+            scoredisplay(score);
+
         };
 
         document.getElementById("punch").onclick=()=>{
             queuedanimation.push("punch")
+            score=scores.punch;
+            scoredisplay(score);
         };
 
         document.getElementById("backward").onclick=()=>{
             queuedanimation.push("backward")
+            score=scores.backward;
+            scoredisplay(score);
         };
 
         document.getElementById("forward").onclick=()=>{
             queuedanimation.push("forward")
+            score=scores.forward;
+            scoredisplay(score);
         };
 
         document.getElementById("block").onclick=()=>{
             queuedanimation.push("block")
+            score=scores.block;
+            scoredisplay(score);
         };
         
         document.addEventListener("keyup", (event) =>{
@@ -124,19 +148,33 @@
 
             if (key === 'ArrowLeft'){
                 queuedanimation.push("kick")
+                score=scores.kick;
             }
 
             else if (key === 'ArrowRight'){
                 queuedanimation.push("punch");
+                score=scores.punch;
             }
             else if (key === 'ArrowUp'){
                 queuedanimation.push("forward");
+                score=scores.forward;
             }
             else if (key === 'ArrowDown'){
                 queuedanimation.push("backward");
+                score=scores.backward;
             }
-            
-        });   
+            scoredisplay(score);
+        }); 
+        let prevscore=0; 
+        let scoredisplay=(score) =>{
+            console.log(score);
+            score = score + prevscore;
+            prevscore = score;
+            console.log(score);
+            document.getElementById('score').innerHTML = "YOURSCORE: " + score;
+        }
+        scoredisplay(score) 
+        
     });
     </script>
     <script type="text/javascript">
@@ -145,10 +183,8 @@
         let loadimagea=(src,callback) =>{
             let img = document.createElement("img");
             img.onload=()=>callback(img);
-            console.log("hello");
             img.src = src
         };
-        
 
         
         //creating a function for image src
