@@ -1,0 +1,42 @@
+body{
+    
+    background: url(background.jpg) no-repeat center center fixed #000; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+    font-family: 'Times New Roman', Times, serif;
+    font-display: flex;
+}
+.buttons{
+    display: flex;
+    background-color: black;
+    color: blanchedalmond;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    flex-wrap: wrap;
+   
+    
+}
+.mycanvas{
+    text-align: center;
+    align-content: center;
+}
+#top{
+    background-color: gray;
+
+    
+    position: absolute;
+    top:0;
+    right: 0;
+    text-align: center;
+    display: inline;
+}
+#bottom {
+    position:absolute;                 
+    bottom:0;                         
+    left: 0;
+                         
+}
